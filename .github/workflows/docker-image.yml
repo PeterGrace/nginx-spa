@@ -8,9 +8,30 @@ on:
 
 jobs:
 
-  build:
+  build-amd64:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker buildx build --platform linux/arm64,linux/amd64 . -t nginx-spa:$(date +%s)
+      run: docker buildx build --platform linux/amd64 . -t nginx-spa:$(date +%s)
+    - name: Push To Registry
+      uses: redhat-actions/push-to-registry@v2.7
+      with:
+        image: dreg.vsix.me:9443/nginx-spa
+        registry: dreg.vsix.me:9443
+        username: ${REGISTRY_LOGIN}
+        password: ${REGISTRY_PASSWORD}
+
+build-arm64:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker buildx build --platform linux/arm64 . -t nginx-spa:$(date +%s)
+    - name: Push To Registry
+      uses: redhat-actions/push-to-registry@v2.7
+      with:
+        image: dreg.vsix.me:9443/nginx-spa
+        registry: dreg.vsix.me:9443
+        username: ${REGISTRY_LOGIN}
+        password: ${REGISTRY_PASSWORD}
