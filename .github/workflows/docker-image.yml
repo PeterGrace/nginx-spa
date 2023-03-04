@@ -26,7 +26,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker buildx build --platform linux/arm64 . -t nginx-spa:$(date +%s)
+      run: docker buildx build --platform linux/arm64 -f Dockerfile.arm64v8 . -t nginx-spa:$(date +%s)
     - name: Push To Registry
       uses: redhat-actions/push-to-registry@v2.7
       with:
